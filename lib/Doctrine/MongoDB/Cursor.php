@@ -306,12 +306,8 @@ class Cursor implements Iterator
      */
     public function getSingleResult()
     {
-        $originalLimit = $this->limit;
-        $this->reset();
-        $this->limit(1);
-        $result = current($this->toArray(false)) ?: null;
-        $this->reset();
-        $this->limit($originalLimit);
+        $mongoCollection = $this->collection->getMongoCollection();
+        $result = $mongoCollection->findOne($this->getQuery());
         return $result;
     }
 
